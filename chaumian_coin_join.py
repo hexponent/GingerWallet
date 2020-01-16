@@ -99,7 +99,6 @@ if __name__ == "__main__":
 
     # WALLET INFO
     print_wallet_info(w)
-    exit()
 
     # SENDING
     amount = 1000
