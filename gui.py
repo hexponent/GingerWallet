@@ -55,15 +55,17 @@ class MainScreen(QWidget):
         self.move(3, 20)
         self.setFixedSize
 
-        resp = requests.get("https://wasabiwallet.io/api/v3/btc/Offchain/exchange-rates")
+        rates = requests.get("https://wasabiwallet.io/api/v3/btc/Offchain/exchange-rates")
+        coinjoin_states = requests.get("https://wasabiwallet.io/api/v3/btc/ChaumianCoinJoin/states")
 
-        rates = ["1 BTC = {0[rate]} {0[ticker]}".format(el) for el in resp.json()]
+        rates = ["1 BTC = {0[rate]} {0[ticker]}".format(el) for el in rates.json()]
+        coinjoin_info = "\n\nCoinJoin\nPeers: {0[registeredPeerCount]}/{0[requiredPeerCount]}\nRound: {0[roundId]}".format(coinjoin_states.json()[0])
 
-        self.label = QLabel("\n".join(rates))
+        self.label = QLabel("\n".join(rates)+coinjoin_info)
         self.label.setParent(self)
         self.label.move(0, 5)
 
-        prvt_key_shift = 30
+        prvt_key_shift = 80
 
         label = QLabel('Завантажте приватний ключ', self)
         label.move(0, prvt_key_shift)
